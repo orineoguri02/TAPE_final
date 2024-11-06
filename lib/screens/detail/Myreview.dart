@@ -23,7 +23,7 @@ class _MyreviewState extends State<Myreview> {
     'display',
     'play'
   ];
-  int selectedIndex = 0; // 선택된 카테고리 인덱스
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -73,11 +73,10 @@ class _MyreviewState extends State<Myreview> {
     }
   }
 
-  // 선택된 카테고리에 따라 다른 콘텐츠 표시
   Widget _buildSelectedContent() {
     if (widget.collectionName.isNotEmpty && widget.id.isNotEmpty) {
       return ReviewList(
-        collectionName: collections[selectedIndex], // 선택된 카테고리의 컬렉션 이름 전달
+        collectionName: collections[selectedIndex],
         id: widget.id,
       );
     } else {

@@ -34,8 +34,9 @@ class Frame extends StatelessWidget {
     const apiKey =
         'K%2Bwrqt0w3kcqkpq5TzBHI8P37Kfk50Rlz1dYzc62tM2ltmIBDY3VG4eiblr%2FQbjw1JSXZYsFQBw4IieHP9cP9g%3D%3D';
     final List<String> subCategories = [
-      '음식',
       '식당',
+      '밥',
+      '음식',
     ];
 
     List<dynamic> allItems = [];
@@ -54,7 +55,7 @@ class Frame extends StatelessWidget {
               decodedData['response']['body']['items'] != null) {
             final items =
                 decodedData['response']['body']['items']['item'] as List;
-            // 이미지가 있는 데이터만 필터링하여 리스트에 추가
+
             allItems.addAll(items.where((item) =>
                 item['firstimage'] != null &&
                 item['firstimage'].toString().isNotEmpty));
@@ -218,36 +219,77 @@ class _MapPageState extends State<MapPage> {
                   controller: scrollController,
                   itemCount: widget.restaurant.length,
                   itemBuilder: (context, index) {
-                    var restaurant = widget.restaurant[index];
-                    String imageUrl =
-                        restaurant['firstimage'] ?? ''; // 이미지 URL 가져오기
+                    var cafe = widget.restaurant[index];
+                    String imageUrl = cafe['firstimage'] ?? '';
 
-                    return ListTile(
-                      leading: Image.network(
-                        imageUrl,
-                        height: 80,
-                        width: 80,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Icon(Icons.error);
-                        },
+                    return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.all(16),
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
-                      title: Text(restaurant['title']),
-                      subtitle: Text(restaurant['addr1']),
-                      onTap: () {
+                      onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => DetailPage(
-                              collectionName: 'restaurant',
-                              name: restaurant['title'],
-                              address: restaurant['addr1'],
+                              collectionName: 'cafe',
+                              name: cafe['title'],
+                              address: cafe['addr1'],
                               subname: '',
-                              id: restaurant['contentid'].toString(),
+                              id: cafe['contentid'].toString(),
                             ),
                           ),
                         );
                       },
+                      child: Row(
+                        children: [
+                          if (imageUrl.isNotEmpty)
+                            Image.network(
+                              imageUrl,
+                              height: 100,
+                              width: 100,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Icon(Icons.error);
+                              },
+                            )
+                          else
+                            Container(
+                              height: 100,
+                              width: 100,
+                              color: Colors.grey,
+                              child: Icon(Icons.image_not_supported),
+                            ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  cafe['title'] ?? 'No Name',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                Text(
+                                  cafe['addr1'] ?? 'No Address',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   },
                 ),
