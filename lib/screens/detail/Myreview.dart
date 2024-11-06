@@ -137,7 +137,7 @@ class _MyreviewState extends State<Myreview> {
 
                 final user = userSnapshot.data!.data() as Map<String, dynamic>?;
 
-                final String profileImage = user?['profileImage'] ?? '';
+                final String profileImage = user?['image'] ?? '';
                 final String nickname = user?['nickname'] ?? '이름없음';
 
                 final Timestamp? timestamp = review['timestamp'];
