@@ -219,8 +219,8 @@ class _MapPageState extends State<MapPage> {
                   controller: scrollController,
                   itemCount: widget.restaurant.length,
                   itemBuilder: (context, index) {
-                    var cafe = widget.restaurant[index];
-                    String imageUrl = cafe['firstimage'] ?? '';
+                    var restaurant = widget.restaurant[index];
+                    String imageUrl = restaurant['firstimage'] ?? '';
 
                     return ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -235,11 +235,11 @@ class _MapPageState extends State<MapPage> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => DetailPage(
-                              collectionName: 'cafe',
-                              name: cafe['title'],
-                              address: cafe['addr1'],
+                              collectionName: 'restaurant',
+                              name: restaurant['title'],
+                              address: restaurant['addr1'],
                               subname: '',
-                              id: cafe['contentid'].toString(),
+                              id: restaurant['contentid'].toString(),
                             ),
                           ),
                         );
@@ -271,7 +271,7 @@ class _MapPageState extends State<MapPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  cafe['title'] ?? 'No Name',
+                                  restaurant['title'] ?? 'No Name',
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -279,7 +279,7 @@ class _MapPageState extends State<MapPage> {
                                   ),
                                 ),
                                 Text(
-                                  cafe['addr1'] ?? 'No Address',
+                                  restaurant['addr1'] ?? 'No Address',
                                   style: TextStyle(
                                     fontSize: 15,
                                     color: Colors.black,

@@ -160,11 +160,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => Myreview(
-                            collectionName: '',
-                            id: '',
-                          )),
+                  MaterialPageRoute(builder: (context) => Myreview()),
                 );
               },
             ),

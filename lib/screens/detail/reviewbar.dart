@@ -62,6 +62,7 @@ class _RatingState extends State<Rating> {
         'userId': userId,
         'review': _textController.text.trim(),
         'timestamp': FieldValue.serverTimestamp(),
+        'parentCollection': widget.collectionName,
         ..._ratings,
       };
 
@@ -337,8 +338,13 @@ class ReviewList extends StatelessWidget {
   Widget _buildRatingDetails(Map<String, dynamic> reviewData) {
     return Wrap(
       children: reviewData.entries
-          .where(
-              (e) => !['userId', 'review', 'timestamp', '총별점'].contains(e.key))
+          .where((e) => ![
+                'userId',
+                'review',
+                'timestamp',
+                '총별점',
+                'parentCollection'
+              ].contains(e.key))
           .map((e) => Container(
                 constraints: BoxConstraints(maxWidth: 70),
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
