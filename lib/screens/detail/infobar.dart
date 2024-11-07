@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:html/parser.dart';
+import 'package:url_launcher/url_launcher.dart'; // url_launcher import
 
 class InfoPage extends StatefulWidget {
   final String contentId;
@@ -25,6 +26,15 @@ class _InfoPageState extends State<InfoPage> {
   void initState() {
     super.initState();
     _fetchContentDetails();
+  }
+
+  Future<void> _launchUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.inAppBrowserView);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   Future<void> _fetchContentDetails() async {
@@ -51,15 +61,10 @@ class _InfoPageState extends State<InfoPage> {
         final commonData = json.decode(utf8.decode(commonResponse.bodyBytes));
         final introData = json.decode(utf8.decode(introResponse.bodyBytes));
 
-        print('Common Response Body: ${utf8.decode(commonResponse.bodyBytes)}');
-        print('Intro Response Body: ${utf8.decode(introResponse.bodyBytes)}');
-
         var commonItems = commonData['response']?['body']?['items']?['item'];
         var introItems = introData['response']?['body']?['items']?['item'];
 
         if (commonItems == null || commonItems.isEmpty) {
-          print(
-              'No common items found for the given contentId: ${widget.contentId}');
           setState(() {
             _hasError = true;
             _contentDetails = null;
@@ -68,8 +73,6 @@ class _InfoPageState extends State<InfoPage> {
         }
 
         if (introItems == null || introItems.isEmpty) {
-          print(
-              'No intro items found for the given contentId: ${widget.contentId}');
           setState(() {
             _hasError = true;
             _contentDetails = null;
@@ -81,7 +84,6 @@ class _InfoPageState extends State<InfoPage> {
         var introItem = introItems[0];
 
         setState(() {
-          // 조건부로 필요한 필드만 추가하여 더 깔끔하게 정리된 형태
           _contentDetails = {
             if (introItem.containsKey('opentimefood'))
               'opentimefood': introItem['opentimefood'],
@@ -118,14 +120,11 @@ class _InfoPageState extends State<InfoPage> {
         setState(() {
           _hasError = true;
         });
-        print(
-            'Failed to load data. Status code: ${commonResponse.statusCode} or ${introResponse.statusCode}');
       }
     } catch (e) {
       setState(() {
         _hasError = true;
       });
-      print('Error fetching content details: ${e.toString()}');
     }
   }
 
@@ -174,11 +173,7 @@ class _InfoPageState extends State<InfoPage> {
             content: _contentDetails?['overview'] ?? '정보 없음',
           ),
           Divider(thickness: 0.7, color: Colors.grey),
-          _buildInfoSection(
-            icon: Icons.home,
-            title: '홈페이지',
-            content: _contentDetails?['homepage'] ?? '정보 없음',
-          ),
+          _buildHomepageSection(),
           Divider(thickness: 0.7, color: Colors.grey),
           _buildInfoSection(
             icon: Icons.local_parking,
@@ -192,6 +187,47 @@ class _InfoPageState extends State<InfoPage> {
         ],
       ),
     );
+  }
+
+  Widget _buildHomepageSection() {
+    final homepage = _contentDetails?['homepage'];
+    if (homepage == null || homepage.isEmpty) {
+      return _buildInfoSection(
+        icon: Icons.home,
+        title: '홈페이지',
+        content: '정보 없음',
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.all(23.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.home),
+                SizedBox(width: 8),
+                Text('홈페이지', style: TextStyle(fontSize: 15)),
+              ],
+            ),
+            SizedBox(height: 12),
+            GestureDetector(
+              onTap: () async {
+                await _launchUrl(homepage);
+              },
+              child: Text(
+                homepage,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.blue,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   Widget _buildInfoSection({

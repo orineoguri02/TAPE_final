@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/packages/product.dart';
 import 'package:flutter_application_1/screens/home/banner1.dart';
-import 'package:flutter_application_1/screens/map/food.dart';
+import 'package:flutter_application_1/screens/map/Frame.dart';
 
 import 'drawer.dart';
 import 'search.dart';
