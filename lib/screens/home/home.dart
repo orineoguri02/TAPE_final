@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/packages/product.dart';
 import 'package:flutter_application_1/screens/home/banner1.dart';
-
-import 'package:flutter_application_1/screens/map/mall.dart';
-import 'package:flutter_application_1/screens/map/cafe.dart';
-import 'package:flutter_application_1/screens/map/display.dart';
 import 'package:flutter_application_1/screens/map/food.dart';
-import 'package:flutter_application_1/screens/map/park.dart';
-import 'package:flutter_application_1/screens/map/play.dart';
+
 import 'drawer.dart';
 import 'search.dart';
 
@@ -46,11 +42,11 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _buildIconButton(String asset, Widget destination) {
+  Widget _buildIconButton(String asset, Product product) {
     return TextButton(
       onPressed: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => destination),
+        MaterialPageRoute(builder: (context) => Frame(product: product)),
       ),
       child: Image.asset(asset, height: 55, width: 50),
     );
@@ -149,32 +145,27 @@ class _HomeState extends State<Home> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Column(
                   children: [
-                    Column(
-                      children: [
-                        _buildIconButton('assets/bob.png', Frame()),
-                        SizedBox(height: 20),
-                        _buildIconButton('assets/display.png', DisplayFrame()),
-                      ],
-                    ),
-                    SizedBox(width: 30),
-                    Column(
-                      children: [
-                        _buildIconButton('assets/cafe.png', CafeFrame()),
-                        SizedBox(height: 20),
-                        _buildIconButton('assets/play.png', PlayFrame()),
-                      ],
-                    ),
-                    SizedBox(width: 30),
-                    Column(
-                      children: [
-                        _buildIconButton('assets/park.png', ParkFrame()),
-                        SizedBox(height: 20),
-                        _buildIconButton('assets/mall.png', ShoppingFrame()),
-                      ],
-                    ),
+                    _buildIconButton('assets/bob.png', restaurantProduct),
+                    SizedBox(height: 20),
+                    _buildIconButton('assets/display.png', displayProduct),
+                  ],
+                ),
+                SizedBox(width: 30),
+                Column(
+                  children: [
+                    _buildIconButton('assets/cafe.png', cafeProduct),
+                    SizedBox(height: 20),
+                    _buildIconButton('assets/play.png', playProduct),
+                  ],
+                ),
+                SizedBox(width: 30),
+                Column(
+                  children: [
+                    _buildIconButton('assets/park.png', parkProduct),
+                    SizedBox(height: 20),
+                    _buildIconButton('assets/mall.png', shoppingProduct),
                   ],
                 ),
               ],
