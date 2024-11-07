@@ -6,6 +6,7 @@ import 'package:flutter_application_1/screens/detail/Myreview.dart';
 import 'package:flutter_application_1/screens/detail/favoriate.dart';
 import 'package:flutter_application_1/screens/detail/profile.dart';
 import 'package:flutter_application_1/screens/intro/login.dart';
+import 'package:flutter_application_1/screens/map/My_map.dart';
 
 class CustomDrawer extends StatefulWidget {
   @override
@@ -146,12 +147,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       Text('찜한 장소'),
                     ],
                   ),
-                  const Column(
+                  Column(
                     children: [
-                      Icon(Icons.map_outlined),
+                      Column(
+                        children: [
+                          IconButton(
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => MyMap()),
+                            ),
+                            icon: Icon(Icons.map_outlined),
+                          ),
+                        ],
+                      ),
                       Text('지도'),
                     ],
-                  ),
+                  )
                 ],
               ),
             ),
