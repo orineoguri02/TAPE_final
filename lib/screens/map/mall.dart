@@ -5,8 +5,8 @@ import 'package:flutter_application_1/screens/detail/detailpage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
-class Frame extends StatelessWidget {
-  const Frame({super.key});
+class ShoppingFrame extends StatelessWidget {
+  const ShoppingFrame({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class Frame extends StatelessWidget {
             return Center(child: Text('No data available'));
           }
 
-          return MapPage(restaurant: snapshot.data!);
+          return MapPage(shopping: snapshot.data!);
         },
       ),
     );
@@ -33,12 +33,7 @@ class Frame extends StatelessWidget {
   Future<List<dynamic>> fetchBySubCategories() async {
     const apiKey =
         'K%2Bwrqt0w3kcqkpq5TzBHI8P37Kfk50Rlz1dYzc62tM2ltmIBDY3VG4eiblr%2FQbjw1JSXZYsFQBw4IieHP9cP9g%3D%3D';
-    final List<String> subCategories = [
-      '식당',
-      '밥',
-      '음식',
-      '가게',
-    ];
+    final List<String> subCategories = ['백화점', '마트', '', '쇼핑거리'];
 
     List<dynamic> allItems = [];
 
@@ -74,9 +69,9 @@ class Frame extends StatelessWidget {
 }
 
 class MapPage extends StatefulWidget {
-  final List<dynamic> restaurant;
+  final List<dynamic> shopping;
 
-  MapPage({super.key, required this.restaurant});
+  MapPage({super.key, required this.shopping});
 
   @override
   _MapPageState createState() => _MapPageState();
@@ -135,16 +130,16 @@ class _MapPageState extends State<MapPage> {
       _markers.clear();
     });
 
-    for (var restaurant in widget.restaurant) {
-      double latitude = double.parse(restaurant['mapy']);
-      double longitude = double.parse(restaurant['mapx']);
+    for (var shopping in widget.shopping) {
+      double latitude = double.parse(shopping['mapy']);
+      double longitude = double.parse(shopping['mapx']);
 
       Marker marker = Marker(
-        markerId: MarkerId(restaurant['contentid'].toString()),
+        markerId: MarkerId(shopping['contentid'].toString()),
         position: LatLng(latitude, longitude),
         infoWindow: InfoWindow(
-          title: restaurant['title'],
-          snippet: restaurant['addr1'],
+          title: shopping['title'],
+          snippet: shopping['addr1'],
         ),
       );
 
@@ -218,10 +213,10 @@ class _MapPageState extends State<MapPage> {
                 color: Colors.white,
                 child: ListView.builder(
                   controller: scrollController,
-                  itemCount: widget.restaurant.length,
+                  itemCount: widget.shopping.length,
                   itemBuilder: (context, index) {
-                    var restaurant = widget.restaurant[index];
-                    String imageUrl = restaurant['firstimage'] ?? '';
+                    var shopping = widget.shopping[index];
+                    String imageUrl = shopping['firstimage'] ?? '';
 
                     return ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -236,11 +231,11 @@ class _MapPageState extends State<MapPage> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => DetailPage(
-                              collectionName: 'restaurant',
-                              name: restaurant['title'],
-                              address: restaurant['addr1'],
+                              collectionName: 'shopping',
+                              name: shopping['title'],
+                              address: shopping['addr1'],
                               subname: '',
-                              id: restaurant['contentid'].toString(),
+                              id: shopping['contentid'].toString(),
                             ),
                           ),
                         );
@@ -272,7 +267,7 @@ class _MapPageState extends State<MapPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  restaurant['title'] ?? 'No Name',
+                                  shopping['title'] ?? 'No Name',
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -280,7 +275,7 @@ class _MapPageState extends State<MapPage> {
                                   ),
                                 ),
                                 Text(
-                                  restaurant['addr1'] ?? 'No Address',
+                                  shopping['addr1'] ?? 'No Address',
                                   style: TextStyle(
                                     fontSize: 15,
                                     color: Colors.black,

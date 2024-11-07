@@ -81,22 +81,37 @@ class _InfoPageState extends State<InfoPage> {
         var introItem = introItems[0];
 
         setState(() {
+          // 조건부로 필요한 필드만 추가하여 더 깔끔하게 정리된 형태
           _contentDetails = {
-            'opentimefood': introItem['opentimefood'],
-            'usetimeculture': introItem['usetimeculture'],
-            'seat': commonItem['seat'],
-            'tel': commonItem['tel'],
-            'infocenterculture': introItem['infocenterculture'],
-            'parkingfood': introItem['parkingfood'],
-            'parking': introItem['parking'],
-            'parkingculture': introItem['parkingculture'],
-            'overview': commonItem['overview'],
-            'addr1': commonItem['addr1'],
-            'homepage': removeHtmlTags(commonItem['homepage']),
-            'infocenterfood': introItem['infocenterfood'],
-            'infocenter': introItem['infocenter'],
-            'restdate': introItem['restdate'],
-            'usetime': introItem['usetime'],
+            if (introItem.containsKey('opentimefood'))
+              'opentimefood': introItem['opentimefood'],
+            if (introItem.containsKey('usetimeculture'))
+              'usetimeculture': introItem['usetimeculture'],
+            if (commonItem.containsKey('seat')) 'seat': commonItem['seat'],
+            if (introItem.containsKey('tel')) 'tel': introItem['tel'],
+            if (introItem.containsKey('infocenterculture'))
+              'infocenterculture': introItem['infocenterculture'],
+            if (introItem.containsKey('parkingfood'))
+              'parkingfood': introItem['parkingfood'],
+            if (introItem.containsKey('parking'))
+              'parking': introItem['parking'],
+            if (introItem.containsKey('parkingculture'))
+              'parkingculture': introItem['parkingculture'],
+            if (commonItem.containsKey('overview'))
+              'overview': commonItem['overview'],
+            if (commonItem.containsKey('addr1')) 'addr1': commonItem['addr1'],
+            if (commonItem.containsKey('homepage'))
+              'homepage': removeHtmlTags(commonItem['homepage']),
+            if (introItem.containsKey('infocenterfood'))
+              'infocenterfood': introItem['infocenterfood'],
+            if (introItem.containsKey('infocenter'))
+              'infocenter': introItem['infocenter'],
+            if (introItem.containsKey('infocentershopping'))
+              'infocentershopping': introItem['infocentershopping'],
+            if (introItem.containsKey('parkingshopping'))
+              'parkingshopping': introItem['parkingshopping'],
+            if (introItem.containsKey('opentime'))
+              'opentime': introItem['opentime'],
           };
         });
       } else {
@@ -139,6 +154,7 @@ class _InfoPageState extends State<InfoPage> {
             content: _contentDetails?['opentimefood'] ??
                 _contentDetails?['usetimeculture'] ??
                 _contentDetails?['restdate'] ??
+                _contentDetails?['opentime'] ??
                 '정보 없음',
           ),
           Divider(thickness: 0.7, color: Colors.grey),
@@ -148,6 +164,7 @@ class _InfoPageState extends State<InfoPage> {
             content: _contentDetails?['infocenterfood'] ??
                 _contentDetails?['infocenterculture'] ??
                 _contentDetails?['infocenter'] ??
+                _contentDetails?['infocentershopping'] ??
                 '정보 없음',
           ),
           Divider(thickness: 0.7, color: Colors.grey),
@@ -169,6 +186,7 @@ class _InfoPageState extends State<InfoPage> {
             content: _contentDetails?['parkingfood'] ??
                 _contentDetails?['parking'] ??
                 _contentDetails?['parkingculture'] ??
+                _contentDetails?['parkingshopping'] ??
                 '정보없음',
           ),
         ],

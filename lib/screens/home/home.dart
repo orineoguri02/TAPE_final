@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/home/banner1.dart';
 
-import 'package:flutter_application_1/screens/map/all.dart';
+import 'package:flutter_application_1/screens/map/mall.dart';
 import 'package:flutter_application_1/screens/map/cafe.dart';
 import 'package:flutter_application_1/screens/map/display.dart';
 import 'package:flutter_application_1/screens/map/food.dart';
@@ -172,7 +172,7 @@ class _HomeState extends State<Home> {
                       children: [
                         _buildIconButton('assets/park.png', ParkFrame()),
                         SizedBox(height: 20),
-                        _buildIconButton('assets/all.png', AllPlacesFrame()),
+                        _buildIconButton('assets/mall.png', ShoppingFrame()),
                       ],
                     ),
                   ],
