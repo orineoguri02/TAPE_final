@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/course/new_cos.dart';
 import 'package:flutter_application_1/screens/detail/Myreview.dart';
@@ -30,8 +31,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
     if (user != null) {
       DocumentSnapshot userData =
           await _firestore.collection('users').doc(user.uid).get();
+
+      String imageUrl = userData['image'] ?? '';
+
+      if (imageUrl.startsWith('gs://')) {
+        final ref = FirebaseStorage.instance.refFromURL(imageUrl);
+        imageUrl = await ref.getDownloadURL();
+      }
+
       setState(() {
-        _profileImageUrl = userData['image'] ?? '';
+        _profileImageUrl = imageUrl;
         _nicknameController.text = userData['nickname'] ?? '';
       });
     }
